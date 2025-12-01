@@ -26,3 +26,44 @@ let range = {
 for (let value of range) {
   console.log(value); // 1 then 2, then 3, then 4, then 5
 }
+
+//Async iterables
+//syntax: Symbol.asyncIterator
+{
+  let range = {
+    from: 1,
+    to: 5,
+
+    [Symbol.asyncIterator]() {
+      // (1)
+      return {
+        current: this.from,
+        last: this.to,
+
+        async next() {
+          // (2)
+
+          // note: we can use "await" inside the async next:
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // (3)
+
+          if (this.current <= this.last) {
+            return { done: false, value: this.current++ };
+          } else {
+            return { done: true };
+          }
+        },
+      };
+    },
+  };
+
+  (async () => {
+    for await (let value of range) {
+      // (4)
+      console.log(value); // 1,2,3,4,5
+    }
+  })();
+}
+
+//NOTES: The spread syntax ... doesn’t work asynchronously
+
+//Recall generators
