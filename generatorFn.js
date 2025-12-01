@@ -37,3 +37,16 @@ for (let value of generateSequence()) {
     console.log(value);
   }
 }
+
+//coz iterables, it can be use with spread op syntax
+
+{
+  function* generateSequence() {
+    yield 1;
+    yield 2;
+    yield 3;
+  }
+
+  let sequence = [0, ...generateSequence()];
+  console.log(sequence); // [0,1,2,3]
+}
