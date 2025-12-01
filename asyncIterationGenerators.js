@@ -67,3 +67,31 @@ for (let value of range) {
 //NOTES: The spread syntax ... doesn’t work asynchronously
 
 //Recall generators
+function* generateSequence(start, end) {
+  for (let i = start; i <= end; i++) {
+    yield i;
+  }
+}
+
+for (let value of generateSequence(1, 5)) {
+  console.log(value); // 1,2,3,4,5
+}
+
+//using symbol.iterator to return a generator
+{
+  let range = {
+    from: 1,
+    to: 5,
+
+    *[Symbol.iterator]() {
+      // a shorthand for [Symbol.iterator]: function*()
+      for (let value = this.from; value <= this.to; value++) {
+        yield value;
+      }
+    },
+  };
+
+  for (let value of range) {
+    console.log(value); // 1, then 2, then 3, then 4, then 5
+  }
+}
